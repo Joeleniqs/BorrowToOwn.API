@@ -1,0 +1,29 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BorrowToOwn.API", "BorrowToOwn.API\BorrowToOwn.API.csproj", "{18346ADD-E470-40CE-A5A1-F2851E7B6912}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BorrowToOwn.Services", "BorrowToOwn.Services\BorrowToOwn.Services.csproj", "{A70A313E-0DAA-42C8-AE08-A294C73FC150}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BorrowToOwn.Data", "BorrowToOwn.Data\BorrowToOwn.Data.csproj", "{2851333E-7EC3-4F37-BFD6-E40974D366EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{18346ADD-E470-40CE-A5A1-F2851E7B6912}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18346ADD-E470-40CE-A5A1-F2851E7B6912}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18346ADD-E470-40CE-A5A1-F2851E7B6912}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18346ADD-E470-40CE-A5A1-F2851E7B6912}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A70A313E-0DAA-42C8-AE08-A294C73FC150}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A70A313E-0DAA-42C8-AE08-A294C73FC150}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A70A313E-0DAA-42C8-AE08-A294C73FC150}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A70A313E-0DAA-42C8-AE08-A294C73FC150}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2851333E-7EC3-4F37-BFD6-E40974D366EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2851333E-7EC3-4F37-BFD6-E40974D366EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2851333E-7EC3-4F37-BFD6-E40974D366EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2851333E-7EC3-4F37-BFD6-E40974D366EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
