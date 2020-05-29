@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BorrowToOwn.Data.Models
 {
@@ -11,13 +12,18 @@ namespace BorrowToOwn.Data.Models
         }
         public long Id { get; set; }
         public long ProductId { get; set; }
-        public long UserId { get; set; }
+        public string AppUserId { get; set; }
 
         public int OrderedQuantity { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
         public decimal OrderAmount { get; set; }
 
+        public bool IsAdminApproved { get; set; }
+        public DateTimeOffset TimeStampApproved { get; set; }
+        public string ApprovedBy { get; set; }
+
         public PaymentPlan PaymentPlan { get; set; }
-        public User User { get; set; }
+        public AppUser AppUser { get; set; }
         public Product Product { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
     }

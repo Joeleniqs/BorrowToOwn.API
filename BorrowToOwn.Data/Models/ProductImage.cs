@@ -8,7 +8,7 @@ namespace BorrowToOwn.Data.Models
 
         public byte[] Image { get; set; }
         public string ImageName { get; set; }
-
+        public string ImageExtension { get; set; }
         public bool IsCoverImage { get; set; }
 
         public Product Product { get; set; }

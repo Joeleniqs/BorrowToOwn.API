@@ -9,6 +9,7 @@ namespace BorrowToOwn.Data.Models
         public Category()
         {
             Products = new HashSet<Product>();
+            SubCategories = new HashSet<SubCategory>();
         }
 
         public int CategoryId { get; set; }
@@ -24,7 +25,7 @@ namespace BorrowToOwn.Data.Models
         public DateTimeOffset TimeStampCreated{ get; set; }
         public DateTimeOffset TimeStampModified { get; set; }
       
-
+        public virtual IEnumerable<SubCategory> SubCategories { get; set; }
         public virtual IEnumerable<Product> Products { get; set; }
     }
 }
