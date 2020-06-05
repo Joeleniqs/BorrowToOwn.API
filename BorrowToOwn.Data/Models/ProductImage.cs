@@ -5,12 +5,8 @@ namespace BorrowToOwn.Data.Models
     {
         public long Id { get; set; }
         public long ProductId { get; set; }
-
-        public byte[] Image { get; set; }
-        public string ImageName { get; set; }
-        public string ImageExtension { get; set; }
+        public string ImageUrl { get; set; }
         public bool IsCoverImage { get; set; }
-
         public Product Product { get; set; }
     }
 }

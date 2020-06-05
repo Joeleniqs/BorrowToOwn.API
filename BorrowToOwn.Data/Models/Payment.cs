@@ -15,6 +15,5 @@ namespace BorrowToOwn.Data.Models
         public DateTimeOffset TimeStampRegistered { get; set; }
 
         public Order Order { get; set; }
-
     }
 }

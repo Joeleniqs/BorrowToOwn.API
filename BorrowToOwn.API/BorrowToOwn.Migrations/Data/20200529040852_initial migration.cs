@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BorrowToOwn.API.BorrowToOwn.API.Data
+namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 {
     public partial class initialmigration : Migration
     {
