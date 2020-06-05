@@ -13,6 +13,6 @@ namespace BorrowToOwn.Data.Models
         [Required]
         public int TenureInMonths { get; set; }
         [Required]
-        public float AmortizationRate { get; set; }
+        public float MonthlyAmortizationValue { get; set; }
     }
 }

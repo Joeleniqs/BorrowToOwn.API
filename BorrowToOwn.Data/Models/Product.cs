@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using static BorrowToOwn.Data.Common.AppEnum;
 
 namespace BorrowToOwn.Data.Models
 {
@@ -9,6 +10,7 @@ namespace BorrowToOwn.Data.Models
         public Product()
         {
             ProductImages = new HashSet<ProductImage>();
+            AllowedPaymentPlans = new HashSet<ProductPaymentPlan>();
         }
         public long Id { get; set; }
         public int CategoryId { get; set; }
@@ -18,8 +20,17 @@ namespace BorrowToOwn.Data.Models
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal ActualPrice { get; set; }
+
         [Column(TypeName = "decimal(18,2)")]
-        public decimal SellingPrice { get; set; }
+        public decimal OneOffPrice =>  ActualPrice * (decimal) OneOffRate;
+        public float OneOffRate { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal FinancePrice => ActualPrice * (decimal) FinanceRate;
+        public float FinanceRate { get; set; }
+
+        public ProductDetail ProductDetail { get; set; }
+
 
         public bool InStock { get; set; }
         public bool IsActive { get; set; }
@@ -30,7 +41,17 @@ namespace BorrowToOwn.Data.Models
         public DateTimeOffset TimeStampCreated { get; set; }
         public DateTimeOffset TimeStampModified { get; set; }
 
+
         public virtual Category ProductCategory { get; set; }
         public virtual ICollection<ProductImage> ProductImages { get; set; }
+        public ICollection<ProductPaymentPlan> AllowedPaymentPlans { get; set; }
     }
+    public class ProductDetail {
+        public string Model { get; set; }
+        public string Size { get; set; }
+        public string Description { get; set; }
+        public ProductState ProductState { get; set; }
+    }
+    //oneOff rate -> 120%
+    //hp rate -> 136%
 }
