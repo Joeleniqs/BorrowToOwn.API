@@ -404,4 +404,5 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 #All Obj related folder and files
-*/obj/*
+BorrowToOwn.API/obj/
+BorrowToOwn.Services/obj/
