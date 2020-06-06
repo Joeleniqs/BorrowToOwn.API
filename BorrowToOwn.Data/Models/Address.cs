@@ -11,6 +11,7 @@ namespace BorrowToOwn.Data.Models
 
     public class AddressDetails
     {
+            public long Id { get; set; }
             public int StreetNumber { get; set; }
             public string StreetName { get; set; }
             public string City { get; set; }

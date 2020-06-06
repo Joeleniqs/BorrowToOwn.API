@@ -47,6 +47,7 @@ namespace BorrowToOwn.Data.Models
         public ICollection<ProductPaymentPlan> AllowedPaymentPlans { get; set; }
     }
     public class ProductDetail {
+        public long Id { get; set; }
         public string Model { get; set; }
         public string Size { get; set; }
         public string Description { get; set; }

@@ -24,6 +24,16 @@ namespace BorrowToOwn.API.Data
                 .IsUnique();
             builder.Entity<AppUser>()
                 .HasIndex(p => new { p.FirstName, p.LastName, p.Email, p.UserName });
+            builder.Entity<ProductPaymentPlan>().HasKey(k => new { k.ProductId, k.PaymentPlanId });
+            builder.Entity<ProductPaymentPlan>()
+                .HasOne(k => k.Product)
+                .WithMany(k=>k.AllowedPaymentPlans)
+                .HasForeignKey(k=>k.ProductId);
+            builder.Entity<ProductPaymentPlan>()
+              .HasOne(k => k.PaymentPlan)
+              .WithMany(k => k.ProductsAssociatedWith)
+                .HasForeignKey(k => k.PaymentPlanId);
+
         }
         // public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Card> Cards { get; set; }
