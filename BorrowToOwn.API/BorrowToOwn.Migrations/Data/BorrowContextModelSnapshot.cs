@@ -26,6 +26,28 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<long?>("HomeAddressId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("OfficeAddressId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HomeAddressId");
+
+                    b.HasIndex("OfficeAddressId");
+
+                    b.ToTable("Addresses");
+                });
+
+            modelBuilder.Entity("BorrowToOwn.Data.Models.AddressDetails", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
@@ -40,7 +62,7 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("AddressDetails");
                 });
 
             modelBuilder.Entity("BorrowToOwn.Data.Models.AppUser", b =>
@@ -58,6 +80,9 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DOB")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -66,10 +91,13 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsOrderLevelReady")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -107,6 +135,9 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
+                    b.Property<string>("UserProfilePicUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
@@ -119,7 +150,38 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("SurrogateIdentifier")
+                        .IsUnique();
+
+                    b.HasIndex("FirstName", "LastName", "Email", "UserName");
+
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("BorrowToOwn.Data.Models.AppUserBankStatement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DocumentUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("From")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("To")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("AppUserBankStatement");
                 });
 
             modelBuilder.Entity("BorrowToOwn.Data.Models.Card", b =>
@@ -188,6 +250,55 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("BorrowToOwn.Data.Models.Comment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApprovalComment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("OrderId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Comment");
+                });
+
+            modelBuilder.Entity("BorrowToOwn.Data.Models.IdentityDocument", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DocumentUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IdentityName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IdentityType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("IdentityDocument");
+                });
+
             modelBuilder.Entity("BorrowToOwn.Data.Models.Order", b =>
                 {
                     b.Property<long>("Id")
@@ -201,17 +312,29 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                     b.Property<string>("ApprovedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("DeliveryPrice")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsAdminApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsOneOffPurchase")
                         .HasColumnType("bit");
 
                     b.Property<decimal>("OrderAmount")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("OrderState")
+                        .HasColumnType("int");
 
                     b.Property<int>("OrderedQuantity")
                         .HasColumnType("int");
 
                     b.Property<int?>("PaymentPlanId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("PenaltyFeeInduced")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
@@ -305,7 +428,7 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<float>("AmortizationRate")
+                    b.Property<float>("MonthlyAmortizationValue")
                         .HasColumnType("real");
 
                     b.Property<string>("PlanName")
@@ -339,6 +462,9 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<float>("FinanceRate")
+                        .HasColumnType("real");
+
                     b.Property<bool>("InStock")
                         .HasColumnType("bit");
 
@@ -352,13 +478,16 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<float>("OneOffRate")
+                        .HasColumnType("real");
+
+                    b.Property<long?>("ProductDetailId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("SellingPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTimeOffset>("TimeStampCreated")
                         .HasColumnType("datetimeoffset");
@@ -370,7 +499,35 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("Name");
+
+                    b.HasIndex("ProductDetailId");
+
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("BorrowToOwn.Data.Models.ProductDetail", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Model")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductState")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Size")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductDetail");
                 });
 
             modelBuilder.Entity("BorrowToOwn.Data.Models.ProductImage", b =>
@@ -380,13 +537,7 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("ImageExtension")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageName")
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsCoverImage")
@@ -400,6 +551,27 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductImages");
+                });
+
+            modelBuilder.Entity("BorrowToOwn.Data.Models.ProductPaymentPlan", b =>
+                {
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("PaymentPlanId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PaymentPlanName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProductId", "PaymentPlanId");
+
+                    b.HasIndex("PaymentPlanId");
+
+                    b.ToTable("ProductPaymentPlan");
                 });
 
             modelBuilder.Entity("BorrowToOwn.Data.Models.SubCategory", b =>
@@ -556,6 +728,17 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("BorrowToOwn.Data.Models.Address", b =>
+                {
+                    b.HasOne("BorrowToOwn.Data.Models.AddressDetails", "HomeAddress")
+                        .WithMany()
+                        .HasForeignKey("HomeAddressId");
+
+                    b.HasOne("BorrowToOwn.Data.Models.AddressDetails", "OfficeAddress")
+                        .WithMany()
+                        .HasForeignKey("OfficeAddressId");
+                });
+
             modelBuilder.Entity("BorrowToOwn.Data.Models.AppUser", b =>
                 {
                     b.HasOne("BorrowToOwn.Data.Models.Address", "Address")
@@ -563,10 +746,31 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasForeignKey("AddressId");
                 });
 
+            modelBuilder.Entity("BorrowToOwn.Data.Models.AppUserBankStatement", b =>
+                {
+                    b.HasOne("BorrowToOwn.Data.Models.AppUser", "AppUser")
+                        .WithMany("BankStatements")
+                        .HasForeignKey("AppUserId");
+                });
+
             modelBuilder.Entity("BorrowToOwn.Data.Models.Card", b =>
                 {
                     b.HasOne("BorrowToOwn.Data.Models.AppUser", "AppUser")
                         .WithMany("Cards")
+                        .HasForeignKey("AppUserId");
+                });
+
+            modelBuilder.Entity("BorrowToOwn.Data.Models.Comment", b =>
+                {
+                    b.HasOne("BorrowToOwn.Data.Models.Order", null)
+                        .WithMany("ApprovalComments")
+                        .HasForeignKey("OrderId");
+                });
+
+            modelBuilder.Entity("BorrowToOwn.Data.Models.IdentityDocument", b =>
+                {
+                    b.HasOne("BorrowToOwn.Data.Models.AppUser", "AppUser")
+                        .WithMany("IdentityDocuments")
                         .HasForeignKey("AppUserId");
                 });
 
@@ -620,12 +824,31 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("BorrowToOwn.Data.Models.ProductDetail", "ProductDetail")
+                        .WithMany()
+                        .HasForeignKey("ProductDetailId");
                 });
 
             modelBuilder.Entity("BorrowToOwn.Data.Models.ProductImage", b =>
                 {
                     b.HasOne("BorrowToOwn.Data.Models.Product", "Product")
                         .WithMany("ProductImages")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BorrowToOwn.Data.Models.ProductPaymentPlan", b =>
+                {
+                    b.HasOne("BorrowToOwn.Data.Models.PaymentPlan", "PaymentPlan")
+                        .WithMany("ProductsAssociatedWith")
+                        .HasForeignKey("PaymentPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BorrowToOwn.Data.Models.Product", "Product")
+                        .WithMany("AllowedPaymentPlans")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
