@@ -4,7 +4,7 @@ using BorrowToOwn.Data.Models;
 
 namespace BorrowToOwn.Data.Repository.Contracts
 {
-    internal interface ICategoryRepository
+    public interface ICategoryRepository
     {
         Task<Category> AddCategoryAsync(Category category);
         Task<IEnumerable<Category>> GetCategoriesAsync();

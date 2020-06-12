@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BorrowToOwn.Data.Repository.Implementations
 {
-    internal class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : ICategoryRepository
     {
         private readonly BorrowContext _context;
 

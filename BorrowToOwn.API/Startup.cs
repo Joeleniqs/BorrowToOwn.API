@@ -2,6 +2,10 @@ using System;
 using AutoMapper;
 using BorrowToOwn.Data.Data;
 using BorrowToOwn.Data.Models;
+using BorrowToOwn.Data.Repository.Contracts;
+using BorrowToOwn.Data.Repository.Implementations;
+using BorrowToOwn.Services.Contracts;
+using BorrowToOwn.Services.Implementations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -50,6 +54,8 @@ namespace BorrowToOwn.API
                 .AddEntityFrameworkStores<BorrowContext>()
                 .AddDefaultTokenProviders();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

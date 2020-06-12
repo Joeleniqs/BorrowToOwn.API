@@ -10,7 +10,7 @@ namespace BorrowToOwn.Data.Models
             Products = new HashSet<Product>();
         }
         public long Id { get; set; }
-        public long CategoryId { get; set; }
+        public int CategoryId { get; set; }
         public long Name { get; set; }
 
         public bool IsActive { get; set; }
