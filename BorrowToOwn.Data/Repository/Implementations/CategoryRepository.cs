@@ -39,7 +39,7 @@ namespace BorrowToOwn.Data.Repository.Implementations
         public async Task<bool> DeleteCategoryAsync(int id)
         {
             var category = await _context.Categories
-                                                  .Where(cat=>cat.CategoryId == id)
+                                                  .Where(cat=>cat.Id == id)
                                                   .Include(sub => sub.SubCategories)
                                                   .FirstOrDefaultAsync();
             category.IsActive = !category.IsActive;
@@ -55,7 +55,7 @@ namespace BorrowToOwn.Data.Repository.Implementations
 
         public async Task<bool> DeleteSubCategoryAsync(int categoryId, int subCategoryId)
         {
-            var subCategory = await _context.SubCategories.FirstOrDefaultAsync(sub => sub.CategoryId == categoryId && sub.Id == subCategoryId);
+            var subCategory = await _context.SubCategories.FirstOrDefaultAsync(sub => sub.Id == categoryId && sub.Id == subCategoryId);
             if (subCategory == default) return false;
 
             subCategory.IsActive = !subCategory.IsActive;
@@ -77,7 +77,7 @@ namespace BorrowToOwn.Data.Repository.Implementations
             {
                 if (start == -1 || end == -1 && end <= start) return null;
                 return await _context.Categories
-                                        .Where(cat => cat.CategoryId == id)
+                                        .Where(cat => cat.Id == id)
                                         .Include(ent => ent.SubCategories)
                                         .ThenInclude(ent => ent.Products)
                                         .Skip(start)
@@ -89,18 +89,18 @@ namespace BorrowToOwn.Data.Repository.Implementations
             {
                 return await _context.Categories
                                             .Include(ent => ent.SubCategories)
-                                            .FirstOrDefaultAsync(category => category.CategoryId == id);
+                                            .FirstOrDefaultAsync(category => category.Id == id);
             }
             else
             {
                 return await _context.Categories
-                                        .FirstOrDefaultAsync(category => category.CategoryId == id);
+                                        .FirstOrDefaultAsync(category => category.Id == id);
             }
         }
 
         public async Task<bool> IsCategoryValidAsync(int id)
         {
-            var category = await _context.Categories.FirstOrDefaultAsync(cat => cat.CategoryId == id);
+            var category = await _context.Categories.FirstOrDefaultAsync(cat => cat.Id == id);
             if (category == default(Category)) return false;
             return true;
         }

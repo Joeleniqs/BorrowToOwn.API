@@ -11,7 +11,7 @@ namespace BorrowToOwn.Data.Models
             SubCategories = new HashSet<SubCategory>();
         }
 
-        public int CategoryId { get; set; }
+        public int Id { get; set; }
         [Required]
         public string CategoryName { get; set; }
 

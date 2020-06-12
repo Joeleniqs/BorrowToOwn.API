@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 {
     [DbContext(typeof(BorrowContext))]
-    [Migration("20200612024520_dropping duplicate Foreign key Id on SubCategory")]
+    [Migration("20200612044445_dropping duplicate Foreign key Id on SubCategory")]
     partial class droppingduplicateForeignkeyIdonSubCategory
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -583,10 +583,7 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("CategoryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int?>("CategoryId1")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
@@ -615,7 +612,7 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId1");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("SubCategories");
                 });
@@ -881,7 +878,9 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                 {
                     b.HasOne("BorrowToOwn.Data.Models.Category", "Category")
                         .WithMany("SubCategories")
-                        .HasForeignKey("CategoryId1");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
