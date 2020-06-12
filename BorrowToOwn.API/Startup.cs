@@ -1,8 +1,11 @@
-using BorrowToOwn.API.Data;
+using System;
+using AutoMapper;
+using BorrowToOwn.Data.Data;
 using BorrowToOwn.Data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,20 +19,24 @@ namespace BorrowToOwn.API
 
         private readonly IWebHostEnvironment _env;
 
-        public Startup(IConfiguration configuration,IWebHostEnvironment environment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
             _env = environment;
         }
 
-       
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var migrationAssembly = typeof(Startup).Assembly.GetName().Name;
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddMvcOptions(options =>
+                {
+                    options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+                });
             services.AddDbContext<BorrowContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString(_env.IsDevelopment() ? "BorrowConnection" : "BorrowConnection"),
                                      sqlOptions => sqlOptions.MigrationsAssembly(migrationAssembly)
@@ -42,6 +49,7 @@ namespace BorrowToOwn.API
             })
                 .AddEntityFrameworkStores<BorrowContext>()
                 .AddDefaultTokenProviders();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,7 +65,7 @@ namespace BorrowToOwn.API
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseStatusCodePages();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

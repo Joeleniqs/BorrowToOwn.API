@@ -3,7 +3,7 @@ using BorrowToOwn.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BorrowToOwn.API.Data
+namespace BorrowToOwn.Data.Data
 {
     public class BorrowContext : IdentityDbContext<AppUser>
     {

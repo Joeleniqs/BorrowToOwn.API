@@ -22,4 +22,8 @@
   <ItemGroup>
     <ProjectReference Include="..\BorrowToOwn.Data\BorrowToOwn.Data.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Contracts\" />
+    <Folder Include="Implementations\" />
+  </ItemGroup>
 </Project>
