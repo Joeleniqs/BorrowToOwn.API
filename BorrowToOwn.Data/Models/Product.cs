@@ -13,7 +13,7 @@ namespace BorrowToOwn.Data.Models
             AllowedPaymentPlans = new HashSet<ProductPaymentPlan>();
         }
         public long Id { get; set; }
-        public int CategoryId { get; set; }
+        public long SubCategoryId { get; set; }
 
         public string Name { get; set; }
         public int  Quantity { get; set; }
@@ -42,9 +42,10 @@ namespace BorrowToOwn.Data.Models
         public DateTimeOffset TimeStampModified { get; set; }
 
 
-        public virtual Category ProductCategory { get; set; }
+        public virtual SubCategory ProductSubCategory { get; set; }
         public virtual ICollection<ProductImage> ProductImages { get; set; }
         public ICollection<ProductPaymentPlan> AllowedPaymentPlans { get; set; }
+
     }
     public class ProductDetail {
         public long Id { get; set; }

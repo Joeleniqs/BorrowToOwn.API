@@ -4,14 +4,16 @@ using BorrowToOwn.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 {
     [DbContext(typeof(BorrowContext))]
-    partial class BorrowContextModelSnapshot : ModelSnapshot
+    [Migration("20200612023645_changed product relationship to subcategory")]
+    partial class changedproductrelationshiptosubcategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,7 +217,7 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 
             modelBuilder.Entity("BorrowToOwn.Data.Models.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -245,7 +247,7 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                     b.Property<DateTimeOffset>("TimeStampModified")
                         .HasColumnType("datetimeoffset");
 
-                    b.HasKey("Id");
+                    b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -581,7 +583,10 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CategoryId")
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("CategoryId1")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
@@ -610,7 +615,7 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId1");
 
                     b.ToTable("SubCategories");
                 });
@@ -876,9 +881,7 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                 {
                     b.HasOne("BorrowToOwn.Data.Models.Category", "Category")
                         .WithMany("SubCategories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId1");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
