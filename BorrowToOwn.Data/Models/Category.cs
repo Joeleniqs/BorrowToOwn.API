@@ -15,9 +15,9 @@ namespace BorrowToOwn.Data.Models
         [Required]
         public string CategoryName { get; set; }
 
-        public bool IsActive { get; set; }
-        public bool IsModified { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool IsActive { get; set; } = true;
+        public bool IsModified { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
 
         public string CreatedBy { get; set; }
         public string LastModifiedBy { get; set; }

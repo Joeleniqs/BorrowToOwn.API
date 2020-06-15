@@ -1,8 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace BorrowToOwn.Services.Communications.RequestObject.DTO
 {
     public class SubCategoryRequestObject
     {
-        
+        [Required]
+        public string Name { get; set; }
     }
 }

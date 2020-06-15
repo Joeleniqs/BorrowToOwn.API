@@ -53,7 +53,8 @@ namespace BorrowToOwn.API
             })
                 .AddEntityFrameworkStores<BorrowContext>()
                 .AddDefaultTokenProviders();
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            services.AddAutoMapper(assemblies);
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
         }

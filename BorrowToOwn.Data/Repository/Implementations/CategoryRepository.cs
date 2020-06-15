@@ -69,23 +69,11 @@ namespace BorrowToOwn.Data.Repository.Implementations
                                                                                                                                         .Where(cat=>cat.IsActive)
                                                                                                                                         .OrderBy(cat => cat.CategoryName)
                                                                                                                                         .ToListAsync();
-        
 
-        public async Task<Category> GetCategoryAsync(int id, bool includeSubCategories = false, bool includeProducts = false,int start  = -1, int end = -1)
+
+        public async Task<Category> GetCategoryAsync(int id, bool includeSubCategories = false)
         {
-            if (includeProducts && includeSubCategories)
-            {
-                if (start == -1 || end == -1 && end <= start) return null;
-                return await _context.Categories
-                                        .Where(cat => cat.Id == id)
-                                        .Include(ent => ent.SubCategories)
-                                        .ThenInclude(ent => ent.Products)
-                                        .Skip(start)
-                                        .Take(end - start)
-                                        .FirstOrDefaultAsync();
-
-            }
-            else if (includeSubCategories)
+           if (includeSubCategories)
             {
                 return await _context.Categories
                                             .Include(ent => ent.SubCategories)

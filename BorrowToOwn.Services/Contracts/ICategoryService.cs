@@ -10,7 +10,7 @@ namespace BorrowToOwn.Services.Contracts
     {
         Task<CategoryResponseObject> AddCategoryAsync(CategoryRequestObject category);
         Task<IEnumerable<CategoryResponseObject>> GetCategoriesAsync();
-        Task<CategoryResponseObject> GetCategoryAsync(int id, bool includeSubCategories, bool includeProducts, int start, int end);
+        Task<CategoryResponseObject> GetCategoryAsync(int id, bool includeSubCategories);
         Task<bool> DeleteCategoryAsync(int id);
         Task<bool> IsCategoryValidAsync(int id);
         Task<bool> AddSubCategoryAsync(int categoryId, SubCategoryRequestObject subCategory);

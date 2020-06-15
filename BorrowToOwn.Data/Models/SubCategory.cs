@@ -11,16 +11,13 @@ namespace BorrowToOwn.Data.Models
         }
         public long Id { get; set; }
         public int CategoryId { get; set; }
-        public long Name { get; set; }
+        public string Name { get; set; }
 
-        public bool IsActive { get; set; }
-        public bool IsModified { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool IsActive { get; set; } = true;
+        public bool IsModified { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
 
         public string CreatedBy { get; set; }
-        public string LastModifiedBy { get; set; }
-        public DateTimeOffset TimeStampCreated { get; set; }
-        public DateTimeOffset TimeStampModified { get; set; }
 
         public Category Category { get; set; }
         public virtual IEnumerable<Product> Products { get; set; }

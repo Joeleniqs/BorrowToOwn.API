@@ -8,7 +8,7 @@ namespace BorrowToOwn.Data.Repository.Contracts
     {
         Task<Category> AddCategoryAsync(Category category);
         Task<IEnumerable<Category>> GetCategoriesAsync();
-        Task<Category> GetCategoryAsync(int id, bool includeSubCategories,bool includeProducts,int start, int end);
+        Task<Category> GetCategoryAsync(int id, bool includeSubCategories);
         Task<bool> DeleteCategoryAsync(int id);
         Task<bool> IsCategoryValidAsync(int id);
         Task<bool> AddSubCategoryAsync(int categoryId,SubCategory subCategory);
