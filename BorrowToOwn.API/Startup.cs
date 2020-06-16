@@ -35,16 +35,21 @@ namespace BorrowToOwn.API
         public void ConfigureServices(IServiceCollection services)
         {
             var migrationAssembly = typeof(Startup).Assembly.GetName().Name;
-
             services.AddControllers()
                 .AddMvcOptions(options =>
                 {
                     options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
                 });
-            services.AddDbContext<BorrowContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString(_env.IsDevelopment() ? "BorrowConnection" : "BorrowConnection"),
+            services .AddDbContext<BorrowContext>(options =>
+                //options.UseSqlServer(Configuration.GetConnectionString(_env.IsDevelopment() ? "BorrowConnection" : "BorrowConnection"),
+                //                     sqlOptions => sqlOptions.MigrationsAssembly(migrationAssembly)
+                //                     )
+
+                options.UseNpgsql(Configuration.GetConnectionString("BorrowPgConnection"),
                                      sqlOptions => sqlOptions.MigrationsAssembly(migrationAssembly)
-                                     ));
+                )
+                );
+
             //Configure Application User
             services.AddIdentity<AppUser, IdentityRole>(config =>
             {
