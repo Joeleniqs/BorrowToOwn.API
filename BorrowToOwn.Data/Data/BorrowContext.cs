@@ -2,14 +2,21 @@
 using BorrowToOwn.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace BorrowToOwn.Data.Data
 {
     public class BorrowContext : IdentityDbContext<AppUser>
     {
-        public BorrowContext(DbContextOptions<BorrowContext> options) : base(options)
+        private readonly IConfiguration _config;
+
+        public BorrowContext(DbContextOptions<BorrowContext> options,IConfiguration configuration) : base(options)
         {
+            _config = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //    => optionsBuilder.UseNpgsql(_config["ConnectionStrings:BorrowPgConnection"]);
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
