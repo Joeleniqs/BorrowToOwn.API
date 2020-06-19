@@ -23,11 +23,11 @@ namespace BorrowToOwn.Data.Models
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal OneOffPrice =>  ActualPrice * (decimal) OneOffRate;
-        public float OneOffRate { get; set; }
+        public double OneOffRate { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal FinancePrice => ActualPrice * (decimal) FinanceRate;
-        public float FinanceRate { get; set; }
+        public double FinanceRate { get; set; }
 
         public ProductDetail ProductDetail { get; set; }
 

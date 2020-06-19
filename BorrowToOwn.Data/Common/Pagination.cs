@@ -5,16 +5,15 @@ namespace BorrowToOwn.Data.Common
 {
     public class Pagination
     {
-        [Required]
-        public int From { get; set; }
-        [Required]
-        public int  To { get; set; }
+        const int maxPageSize = 20;
+        public string SearchQuery { get; set; }
+        public int PageNumber { get; set; } = 1;
 
-
-        internal async Task<bool> IsValid(Pagination pagination) {
-            if (From > To)  return  await Task.Run(() => { return false; });
-            else if (To - From > 50) return await Task.Run(() => { return false; });
-            return await Task.Run(() => { return true; });
+        private int _pageSize = 10;
+        public int PageSize
+        {
+            get => _pageSize;
+            set => _pageSize = (value > maxPageSize) ? maxPageSize : value;
         }
     }
 

@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using static BorrowToOwn.Data.Common.AppEnum;
@@ -19,13 +19,18 @@ namespace BorrowToOwn.Data.Models
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal OrderAmount { get; set; }
+   
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal UpFrontAmount { get; set; }
 
-        //required
-        public bool IsOneOffPurchase { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal MonthlyAmortizationValue { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal PenaltyFeeInduced { get; set; }
-     
+
+        //[Column(TypeName = "decimal(18,2)")]
+        //public decimal OrderFirstPayment { get; set; }
 
         public bool IsAdminApproved { get; set; }
         public DateTimeOffset TimeStampApproved { get; set; }
@@ -37,6 +42,7 @@ namespace BorrowToOwn.Data.Models
         public DeliveryFee DeliveryPrice { get; set; }
 
         public PaymentPlan PaymentPlan { get; set; }
+
         public AppUser AppUser { get; set; }
         public Product Product { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }

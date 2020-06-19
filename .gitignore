@@ -406,3 +406,6 @@ ASALocalRun/
 #All Obj related folder and files
 BorrowToOwn.API/obj/
 BorrowToOwn.Services/obj/
+
+#All logs related folder and files
+BorrowToOwn.API/Logs/*
