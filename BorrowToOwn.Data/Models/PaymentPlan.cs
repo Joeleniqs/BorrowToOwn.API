@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using static BorrowToOwn.Data.Common.AppEnum;
 
 namespace BorrowToOwn.Data.Models
 {
@@ -13,11 +14,13 @@ namespace BorrowToOwn.Data.Models
         [Required]
         public string PlanName { get; set; }
         [Required]
-        public float UpFrontRate { get; set; }
+        public double UpFrontRate { get; set; }
         [Required]
         public int TenureInMonths { get; set; }
         [Required]
-        public float MonthlyAmortizationValue { get; set; }
+        public PaymentPlanType PlanType { get; set; }
+
+        public bool IsActive { get; set; } = true;
 
         public virtual ICollection<ProductPaymentPlan> ProductsAssociatedWith { get; set; }
     }

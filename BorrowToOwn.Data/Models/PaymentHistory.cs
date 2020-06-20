@@ -12,10 +12,13 @@ namespace BorrowToOwn.Data.Models
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal AmountPaid { get; set; }
+
         [Column(TypeName = "decimal(18,2)")]
         public decimal PreviousBalance { get; set; }
+
         [Column(TypeName = "decimal(18,2)")]
         public decimal NewBalnce { get; set; }
+
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalAmount { get; set; }
 

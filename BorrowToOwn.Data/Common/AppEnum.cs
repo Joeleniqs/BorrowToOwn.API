@@ -18,8 +18,17 @@ namespace BorrowToOwn.Data.Common
             Is_Approved,
             Is_Declined,
             Is_In_Transit,
-            Is_Delivered
+            Is_Delivered,
+            In_Payment,
+            Is_Executed_Completely
         }
+
+        public enum PaymentPlanType
+        {
+            One_Off_Purchase = 1,
+            Hire_Purchase
+        }
+
         public enum IdentityType
         {
             Work_ID = 1,

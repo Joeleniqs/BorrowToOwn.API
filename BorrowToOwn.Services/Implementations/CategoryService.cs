@@ -25,10 +25,7 @@ namespace BorrowToOwn.Services.Implementations
         {
             var date = DateTimeOffset.Now;
             var subCat = _mapper.Map<List<SubCategory>>(category.SubCategories);
-            subCat.ForEach(s =>
-            {
-                s.CreatedBy = category.CreatedBy;
-            });
+            subCat.ForEach(s =>  s.CreatedBy = category.CreatedBy);
             var cat = _mapper.Map<Category>(category);
 
             cat.TimeStampCreated = date;
@@ -41,19 +38,26 @@ namespace BorrowToOwn.Services.Implementations
             return result;
         }
 
-        public Task<bool> AddSubCategoryAsync(int categoryId, SubCategoryRequestObject subCategory)
+        public async Task<bool> AddSubCategoryAsync(int categoryId, SubCategoryRequestObject subCategory)
         {
-            throw new NotImplementedException();
+            var sub = _mapper.Map<SubCategory>(subCategory);
+            var added = await _catRepo.AddSubCategoryAsync(categoryId, sub);
+            if (!added) return false;
+            return true;
         }
 
-        public Task<bool> DeleteCategoryAsync(int id)
+        public async Task<bool> DeleteCategoryAsync(int id)
         {
-            throw new NotImplementedException();
+            var deleted = await _catRepo.DeleteCategoryAsync(id);
+            if (!deleted) return false;
+            return true;
         }
 
-        public Task<bool> DeleteSubCategoryAsync(int categoryId, int subCategoryId)
+        public async  Task<bool> DeleteSubCategoryAsync(int categoryId, int subCategoryId)
         {
-            throw new NotImplementedException();
+            var deleted = await _catRepo.DeleteSubCategoryAsync(categoryId, subCategoryId);
+            if (!deleted) return false;
+            return true;
         }
 
         public async Task<IEnumerable<CategoryResponseObject>> GetCategoriesAsync()
@@ -62,16 +66,18 @@ namespace BorrowToOwn.Services.Implementations
             return _mapper.Map<IEnumerable<CategoryResponseObject>>(cats);
         }
 
-        public async Task<CategoryResponseObject> GetCategoryAsync(int id, bool includeSubCategories)
+        public async Task<CategoryResponseObject> GetCategoryAsync(int id, bool includeSubCategories = false)
         {
             var cats = await _catRepo.GetCategoryAsync(id, includeSubCategories);
             if (cats == null) return null;
             return _mapper.Map<CategoryResponseObject>(cats);
         }
 
-        public Task<bool> IsCategoryValidAsync(int id)
+        public async Task<bool> IsCategoryValidAsync(int id,int subCategoryId = -1,bool isDeleteToggle = false)
         {
-            throw new NotImplementedException();
+            var check = await _catRepo.IsCategoryValidAsync(id, subCategoryId);
+            if (!check) return false;
+            return true;
         }
     }
 }
