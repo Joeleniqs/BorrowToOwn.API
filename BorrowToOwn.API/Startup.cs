@@ -36,7 +36,6 @@ namespace BorrowToOwn.API
         }
 
 
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -51,13 +50,10 @@ namespace BorrowToOwn.API
             var connection = Configuration.GetConnectionString("BorrowPgConnection");
 
             services.AddDbContext<BorrowContext>(options =>
-               //options.UseSqlServer(Configuration.GetConnectionString(_env.IsDevelopment() ? "BorrowConnection" : "BorrowConnection"),
-               //                     sqlOptions => sqlOptions.MigrationsAssembly(migrationAssembly)
-               //                     )
                 options.UseNpgsql(connection,
                                      sqlOptions => sqlOptions.MigrationsAssembly(migrationAssembly)
                 )
-                ) ;
+                );
 
             services.AddHttpClients(Configuration);
 
@@ -74,7 +70,7 @@ namespace BorrowToOwn.API
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IPaymentPlan, PaymentPlanRepository>();
-            services.AddScoped<IPaymentPlanService,PaymentPlanService>();
+            services.AddScoped<IPaymentPlanService, PaymentPlanService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
             DbMigrations.EnsureSeedData(connection);
@@ -87,8 +83,10 @@ namespace BorrowToOwn.API
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseExceptionHandler(errorApp => {
-                errorApp.Run(async (context) => {
+            app.UseExceptionHandler(errorApp =>
+            {
+                errorApp.Run(async (context) =>
+                {
                     var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
                     var exception = exceptionHandlerPathFeature.Error;
 

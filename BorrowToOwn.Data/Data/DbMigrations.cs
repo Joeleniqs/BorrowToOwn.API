@@ -9,17 +9,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BorrowToOwn.Data.Data
 {
-    public  class DbMigrations
+    public class DbMigrations
     {
         public static void EnsureSeedData(string connectionString)
         {
             var services = new ServiceCollection();
             services.AddDbContext<BorrowContext>(options =>
                options.UseNpgsql(connectionString));
-
-            //services.AddIdentity<ApplicationUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
 
             using (var serviceProvider = services.BuildServiceProvider())
             {
@@ -41,7 +37,7 @@ namespace BorrowToOwn.Data.Data
 
                 }
             }
-          
+
         }
 
     }

@@ -40,7 +40,6 @@ namespace BorrowToOwn.API.Controllers
             if (res == null) return BadRequest("Unable to create Product at this time.");
 
             return CreatedAtRoute("GetProduct", new {res.Id}, res);
-            //return Ok(res);
         }
         [HttpGet("{Id:int}", Name = "GetProduct")]
         public async Task<IActionResult> GetProduct(int Id)

@@ -9,22 +9,11 @@ namespace BorrowToOwn.Data.Data
 {
     public class BorrowContext : IdentityDbContext<AppUser>
     {
-        //private readonly IConfiguration _config;
-        // private readonly ILoggerFactory _loggerFactory;
 
-
-        public BorrowContext(DbContextOptions<BorrowContext> options/*, IConfiguration configuration, ILoggerFactory loggerFactory*/) : base(options)
+        public BorrowContext(DbContextOptions<BorrowContext> options) : base(options)
         {
-            //_config = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            //_loggerFactory = loggerFactory;
+            
         }
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseLoggerFactory(_loggerFactory)  //tie-up DbContext with LoggerFactory object
-        //    .EnableSensitiveDataLogging();
-        //   // optionsBuilder.UseNpgsql(_config["ConnectionStrings:BorrowPgConnection"]);
-        //}
 
 
         protected override void OnModelCreating(ModelBuilder builder)

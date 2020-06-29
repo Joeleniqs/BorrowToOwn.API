@@ -6,14 +6,7 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            //            migrationBuilder.Sql(@"CREATE PROCEDURE SelectAllCustomers AS SELECT * FROM ""Products"" ");
-            //            migrationBuilder.Sql(@"CREATE TABLE ""Testing"" (
-            //    TestingID int,
-            //    LastName varchar(255),
-            //    FirstName varchar(255),
-            //    Address varchar(255),
-            //    City varchar(255)
-            //);");
+
             if (migrationBuilder.ActiveProvider == "Npgsql.EntityFrameworkCore.PostgreSQL")
             {
                 // Migrations for creation of the column and the index will appear here, all we need to do is set up the trigger to update the column:

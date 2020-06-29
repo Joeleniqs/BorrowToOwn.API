@@ -25,7 +25,6 @@ namespace BorrowToOwn.Services.Implementations
         private readonly IMapper _mapper;
         private readonly ILogger<ProductService> _logger;
         private readonly IPaymentPlanService _paymentPlanService;
-        //private readonly IUrlHelper _urlHelper;
 
         public ProductService(IProductRepository productRepository, IMapper mapper, ILogger<ProductService> logger, IPaymentPlanService paymentPlanService)
         {
@@ -33,7 +32,6 @@ namespace BorrowToOwn.Services.Implementations
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _paymentPlanService = paymentPlanService ?? throw new ArgumentNullException(nameof(paymentPlanService));
-            //_urlHelper = urlHelper ?? throw new ArgumentNullException(nameof(urlHelper));
         }
 
         public async Task<ProductResponseObject> AddProductAsync(ProductRequestObject product, HttpClient bucketClient)
@@ -105,13 +103,11 @@ namespace BorrowToOwn.Services.Implementations
 
             if (pagination.CategoryId > 0)
             {
-                // var productByCategories = pagination.Category.Trim();
                 collection = collection.Where(a => a.CategoryId == pagination.CategoryId);
             }
 
             if (pagination.SubCategoryId > 0)
             {
-                // var productByCategories = pagination.Category.Trim();
                 collection = collection.Where(a => a.SubCategoryId == pagination.SubCategoryId);
             }
 
@@ -119,15 +115,8 @@ namespace BorrowToOwn.Services.Implementations
             {
 
                 var searchQuery = pagination.SearchQuery.Trim();
-                //collection = collection
-                //    .Where(product => product.Name.Contains(searchQuery)
-                //                                                 || product.Description.Contains(searchQuery)
-                //                                                 || product.Model.Contains(searchQuery));
-
                 collection = collection
                   .Where(product =>product.SearchVector.Matches(searchQuery));
-
-
             }
             var products = PagedList<Product>.Create(collection,
            pagination.PageNumber,

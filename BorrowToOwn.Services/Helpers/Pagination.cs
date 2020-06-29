@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-
-namespace BorrowToOwn.Services.Helpers
+﻿namespace BorrowToOwn.Services.Helpers
 {
     public class Pagination
     {

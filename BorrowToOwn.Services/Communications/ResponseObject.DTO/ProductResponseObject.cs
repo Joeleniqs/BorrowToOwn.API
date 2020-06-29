@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using static BorrowToOwn.Data.Common.AppEnum;
 
 namespace BorrowToOwn.Services.Communications.ResponseObject.DTO
 {
@@ -43,7 +42,5 @@ namespace BorrowToOwn.Services.Communications.ResponseObject.DTO
         public int PaymentPlanId { get; set; }
         public string ProductName { get; set; }
         public string PaymentPlanName { get; set; }
-        //public double UpFrontRate { get; set; }
-        //public int TenureInMonths { get; set; }
     }
 }

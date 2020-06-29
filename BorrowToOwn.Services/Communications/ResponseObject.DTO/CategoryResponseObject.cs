@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace BorrowToOwn.Services.Communications.ResponseObject.DTO
 {

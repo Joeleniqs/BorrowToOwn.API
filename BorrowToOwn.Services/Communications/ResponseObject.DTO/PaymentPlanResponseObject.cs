@@ -1,5 +1,4 @@
-﻿using System;
-namespace BorrowToOwn.Services.Communications.ResponseObject.DTO
+﻿namespace BorrowToOwn.Services.Communications.ResponseObject.DTO
 {
     public class PaymentPlanResponseObject
     {

@@ -23,10 +23,6 @@ namespace BorrowToOwn.Data.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal ActualPrice { get; set; }
 
-        //public decimal OneOffPrice =>  ActualPrice * (decimal) OneOffRate;
-        //public double OneOffRate { get; set; }
-        //public decimal FinancePrice => ActualPrice * (decimal) FinanceRate;
-        //public double FinanceRate { get; set; }
 
         public string Model { get; set; }
         public List<string> AvailableSizes { get; set; }
@@ -52,6 +48,4 @@ namespace BorrowToOwn.Data.Models
         public NpgsqlTsVector SearchVector { get; set; }
     }
     
-    //oneOff rate -> 120%
-    //hp rate -> 136%
 }

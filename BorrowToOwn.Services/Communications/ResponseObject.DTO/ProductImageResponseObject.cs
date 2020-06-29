@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Http;
-
-namespace BorrowToOwn.Services.Communications.ResponseObject.DTO
+﻿namespace BorrowToOwn.Services.Communications.ResponseObject.DTO
 {
     public class ProductImageResponseObject
     {
