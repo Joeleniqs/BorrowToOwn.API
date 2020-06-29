@@ -34,7 +34,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="Controllers\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="BorrowToOwn.Migrations\Scripts\" />
   </ItemGroup>
 </Project>

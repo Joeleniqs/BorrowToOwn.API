@@ -3,6 +3,11 @@ namespace BorrowToOwn.Data.Common
 {
     public class AppEnum
     {
+        public enum ResourceUriType
+        {
+            PreviousPage,
+            NextPage
+        }
         public enum ProductState {
             New = 1,
             Open_Box,
@@ -36,6 +41,16 @@ namespace BorrowToOwn.Data.Common
             International_Passport,
             Driver_License,
             Voter_Card
+        }
+        public enum ProductColour
+        {
+            Black = 1,
+            White,
+            Blue,
+            Green,
+            Purple,
+            Red,
+            Grey
         }
 
     }

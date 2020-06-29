@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
@@ -24,7 +18,7 @@ namespace BorrowToOwn.API
                             .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
                             .Enrich.FromLogContext()
                             //.WriteTo.File(@"identityserver4_log.txt")
-                            .WriteTo.RollingFile(pathFormat: @"Logs/Borrow_log.txt")
+                            .WriteTo.RollingFile(pathFormat: @"Logs/Borrow_log.txt",retainedFileCountLimit:3)
                             .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Literate)
                             .CreateLogger();
             CreateHostBuilder(args).Build().Run();

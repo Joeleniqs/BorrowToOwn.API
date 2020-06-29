@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using BorrowToOwn.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using NpgsqlTypes;
 
 namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 {
     [DbContext(typeof(BorrowContext))]
-    partial class BorrowContextModelSnapshot : ModelSnapshot
+    [Migration("20200623162333_modified Products Entity again")]
+    partial class modifiedProductsEntityagain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -469,9 +470,6 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                     b.Property<List<string>>("AvailableSizes")
                         .HasColumnType("text[]");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
@@ -496,14 +494,14 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("ProductState")
                         .HasColumnType("integer");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
-
-                    b.Property<NpgsqlTsVector>("SearchVector")
-                        .HasColumnType("tsvector");
 
                     b.Property<long>("SubCategoryId")
                         .HasColumnType("bigint");
@@ -516,12 +514,9 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SearchVector")
-                        .HasAnnotation("Npgsql:IndexMethod", "GIN");
+                    b.HasIndex("Name");
 
                     b.HasIndex("SubCategoryId");
-
-                    b.HasIndex("Name", "Description", "Model");
 
                     b.ToTable("Products");
                 });

@@ -1,5 +1,6 @@
 using System;
 using AutoMapper;
+using BorrowToOwn.API.Extensions;
 using BorrowToOwn.Data.Data;
 using BorrowToOwn.Data.Models;
 using BorrowToOwn.Data.Repository.Contracts;
@@ -7,13 +8,18 @@ using BorrowToOwn.Data.Repository.Implementations;
 using BorrowToOwn.Services.Contracts;
 using BorrowToOwn.Services.Implementations;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
 namespace BorrowToOwn.API
 {
@@ -34,21 +40,26 @@ namespace BorrowToOwn.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddSingleton<IConfiguration>();
             var migrationAssembly = typeof(Startup).Assembly.GetName().Name;
             services.AddControllers()
                 .AddMvcOptions(options =>
                 {
                     options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
                 });
-            services .AddDbContext<BorrowContext>(options =>
-                //options.UseSqlServer(Configuration.GetConnectionString(_env.IsDevelopment() ? "BorrowConnection" : "BorrowConnection"),
-                //                     sqlOptions => sqlOptions.MigrationsAssembly(migrationAssembly)
-                //                     )
 
-                options.UseNpgsql(Configuration.GetConnectionString("BorrowPgConnection"),
+            var connection = Configuration.GetConnectionString("BorrowPgConnection");
+
+            services.AddDbContext<BorrowContext>(options =>
+               //options.UseSqlServer(Configuration.GetConnectionString(_env.IsDevelopment() ? "BorrowConnection" : "BorrowConnection"),
+               //                     sqlOptions => sqlOptions.MigrationsAssembly(migrationAssembly)
+               //                     )
+                options.UseNpgsql(connection,
                                      sqlOptions => sqlOptions.MigrationsAssembly(migrationAssembly)
                 )
-                );
+                ) ;
+
+            services.AddHttpClients(Configuration);
 
             //Configure Application User
             services.AddIdentity<AppUser, IdentityRole>(config =>
@@ -64,6 +75,9 @@ namespace BorrowToOwn.API
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IPaymentPlan, PaymentPlanRepository>();
             services.AddScoped<IPaymentPlanService,PaymentPlanService>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductService, ProductService>();
+            DbMigrations.EnsureSeedData(connection);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,6 +87,16 @@ namespace BorrowToOwn.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseExceptionHandler(errorApp => {
+                errorApp.Run(async (context) => {
+                    var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+                    var exception = exceptionHandlerPathFeature.Error;
+
+                    var result = JsonConvert.SerializeObject(new { ErrorMessage = exception.Message });
+                    context.Response.ContentType = "Application/Json";
+                    await context.Response.WriteAsync(result);
+                });
+            });
 
             app.UseHttpsRedirection();
 
