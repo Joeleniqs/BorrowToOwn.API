@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using BorrowToOwn.Services.Communications.RequestObject.DTO;
 using BorrowToOwn.Services.Contracts;
-using BorrowToOwn.Services.Implementations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BorrowToOwn.API.Controllers

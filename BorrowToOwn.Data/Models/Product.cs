@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using NpgsqlTypes;
 using static BorrowToOwn.Data.Common.AppEnum;
 
 namespace BorrowToOwn.Data.Models
@@ -14,6 +15,7 @@ namespace BorrowToOwn.Data.Models
         }
         public long Id { get; set; }
         public long SubCategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         public string Name { get; set; }
         public int  Quantity { get; set; }
@@ -21,20 +23,18 @@ namespace BorrowToOwn.Data.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal ActualPrice { get; set; }
 
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal OneOffPrice =>  ActualPrice * (decimal) OneOffRate;
-        public double OneOffRate { get; set; }
 
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal FinancePrice => ActualPrice * (decimal) FinanceRate;
-        public double FinanceRate { get; set; }
+        public string Model { get; set; }
+        public List<string> AvailableSizes { get; set; }
+        public List<string> AvailableColours { get; set; }
+        public string Description { get; set; }
+        public ProductState ProductState { get; set; }
 
-        public ProductDetail ProductDetail { get; set; }
+        public bool InStock => Quantity > 0;
 
-
-        public bool InStock { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool IsActive { get; set; } = true;
+        public bool IsModified { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
 
         public string CreatedBy { get; set; }
         public string LastModifiedBy { get; set; }
@@ -45,15 +45,7 @@ namespace BorrowToOwn.Data.Models
         public virtual SubCategory ProductSubCategory { get; set; }
         public virtual ICollection<ProductImage> ProductImages { get; set; }
         public ICollection<ProductPaymentPlan> AllowedPaymentPlans { get; set; }
-
+        public NpgsqlTsVector SearchVector { get; set; }
     }
-    public class ProductDetail {
-        public long Id { get; set; }
-        public string Model { get; set; }
-        public string Size { get; set; }
-        public string Description { get; set; }
-        public ProductState ProductState { get; set; }
-    }
-    //oneOff rate -> 120%
-    //hp rate -> 136%
+    
 }

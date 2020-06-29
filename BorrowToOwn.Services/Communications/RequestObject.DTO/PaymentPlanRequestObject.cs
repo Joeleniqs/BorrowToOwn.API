@@ -8,14 +8,10 @@ namespace BorrowToOwn.Services.Communications.RequestObject.DTO
         [Required]
         public string PlanName { get; set; }
         [Required]
-        public double UpFrontRate
-        {
-            get;
-            set ;
-         }
+        public double UpFrontRate { get;set;}
         [Required]
         public int TenureInMonths { get; set; }
         [Required]
-         public int PlanType { get; set; }
+        public int PlanType { get; set; }
     }
 }

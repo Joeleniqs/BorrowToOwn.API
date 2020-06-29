@@ -1,11 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-
-namespace BorrowToOwn.Data.Common
+﻿namespace BorrowToOwn.Services.Helpers
 {
     public class Pagination
     {
         const int maxPageSize = 20;
+        public int CategoryId{ get; set; }
+        public int SubCategoryId { get; set; }
         public string SearchQuery { get; set; }
         public int PageNumber { get; set; } = 1;
 

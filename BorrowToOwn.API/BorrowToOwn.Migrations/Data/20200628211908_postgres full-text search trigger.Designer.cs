@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using BorrowToOwn.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NpgsqlTypes;
@@ -11,9 +12,10 @@ using NpgsqlTypes;
 namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 {
     [DbContext(typeof(BorrowContext))]
-    partial class BorrowContextModelSnapshot : ModelSnapshot
+    [Migration("20200628211908_postgres full-text search trigger")]
+    partial class postgresfulltextsearchtrigger
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,6 +32,8 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 
                     b.Property<long?>("HomeAddressId")
                         .HasColumnType("bigint");
+
+                    //ad
 
                     b.Property<long?>("OfficeAddressId")
                         .HasColumnType("bigint");

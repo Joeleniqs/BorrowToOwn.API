@@ -1,6 +1,4 @@
-﻿
-using System;
-using AutoMapper;
+﻿using AutoMapper;
 using BorrowToOwn.Data.Models;
 using BorrowToOwn.Services.Communications.RequestObject.DTO;
 using BorrowToOwn.Services.Communications.ResponseObject.DTO;

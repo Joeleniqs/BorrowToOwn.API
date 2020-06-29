@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using BorrowToOwn.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using NpgsqlTypes;
 
 namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 {
     [DbContext(typeof(BorrowContext))]
-    partial class BorrowContextModelSnapshot : ModelSnapshot
+    [Migration("20200625230705_modified Products Entity with Product Category Id")]
+    partial class modifiedProductsEntitywithProductCategoryId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -502,9 +503,6 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
-                    b.Property<NpgsqlTsVector>("SearchVector")
-                        .HasColumnType("tsvector");
-
                     b.Property<long>("SubCategoryId")
                         .HasColumnType("bigint");
 
@@ -516,12 +514,9 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SearchVector")
-                        .HasAnnotation("Npgsql:IndexMethod", "GIN");
+                    b.HasIndex("Name");
 
                     b.HasIndex("SubCategoryId");
-
-                    b.HasIndex("Name", "Description", "Model");
 
                     b.ToTable("Products");
                 });
