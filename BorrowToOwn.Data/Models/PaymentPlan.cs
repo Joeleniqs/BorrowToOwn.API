@@ -12,6 +12,7 @@ namespace BorrowToOwn.Data.Models
         }
         public int Id { get; set; }
         [Required]
+        [MaxLength(20)]
         public string PlanName { get; set; }
         [Required]
         public double UpFrontRate { get; set; }
@@ -22,6 +23,6 @@ namespace BorrowToOwn.Data.Models
 
         public bool IsActive { get; set; } = true;
 
-        public virtual ICollection<ProductPaymentPlan> ProductsAssociatedWith { get; set; }
+        public ICollection<ProductPaymentPlan> ProductsAssociatedWith { get; set; }
     }
 }

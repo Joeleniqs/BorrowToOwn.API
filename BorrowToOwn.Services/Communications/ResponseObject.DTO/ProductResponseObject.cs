@@ -5,12 +5,10 @@ namespace BorrowToOwn.Services.Communications.ResponseObject.DTO
 {
     public class ProductResponseObject
     {
-        public ProductResponseObject()
-        {
-        }
         public long Id { get; set; }
         public long SubCategoryId { get; set; }
         public int CategoryId { get; set; }
+        public int BrandId { get; set; }
 
         public string Name { get; set; }
         public int Quantity { get; set; }

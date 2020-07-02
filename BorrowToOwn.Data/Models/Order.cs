@@ -1,5 +1,6 @@
 ﻿ using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static BorrowToOwn.Data.Common.AppEnum;
 
@@ -7,12 +8,10 @@ namespace BorrowToOwn.Data.Models
 {
     public class Order
     {
-        public Order()
-        {
-            Payments = new HashSet<Payment>();
-        }
+        
         public long Id { get; set; }
         public long ProductId { get; set; }
+        [MaxLength(30)]
         public string AppUserId { get; set; }
 
         public int OrderedQuantity { get; set; }
@@ -34,9 +33,10 @@ namespace BorrowToOwn.Data.Models
 
         public bool IsAdminApproved { get; set; }
         public DateTimeOffset TimeStampApproved { get; set; }
+        [MaxLength(20)]
         public string ApprovedBy { get; set; }
-        public List<Comment> ApprovalComments { get; set; }
 
+        public List<Comment> ApprovalComments { get; set; }
 
         public OrderStatus OrderState { get; set; }
         public DeliveryFee DeliveryPrice { get; set; }
@@ -45,13 +45,15 @@ namespace BorrowToOwn.Data.Models
 
         public AppUser AppUser { get; set; }
         public Product Product { get; set; }
-        public virtual ICollection<Payment> Payments { get; set; }
+        public ICollection<Payment> Payments { get; set; } = new HashSet<Payment>();
 
         //Executed Orders
     }
     public class Comment
     {
         public long Id { get; set; }
+
+        [MaxLength(500)]
         public string ApprovalComment { get; set; }
     }
 }

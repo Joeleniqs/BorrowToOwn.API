@@ -30,22 +30,21 @@ namespace BorrowToOwn.Data.Repository.Implementations
 
 
 
-        public async Task<Product> GetProductAsync(long id) => await _context.Products
-                                                                                                                           .Where(product => product.Id == id && product.IsActive)
-                                                                                                                           .Include(product => product.AllowedPaymentPlans)
-                                                                                                                           .Include(product => product.ProductImages)
-                                                                                                                           .FirstOrDefaultAsync();
+        public async Task<Product> GetProductAsync(long id) => await Task.Run(() => GetProductByIdCompiledQuery.Invoke(_context, id));
+
+        //Didn't convert to pre-compilable feature because of IQueryable pagination 
+        public async Task<IQueryable<Product>> GetProductsAsync() => await Task.Run(() => _context.Products
+                                                                                                                                                                  .Include(product => product.AllowedPaymentPlans)
+                                                                                                                                                                  .Include(product => product.ProductImages) as IQueryable<Product>);
 
 
-        public async Task<IQueryable<Product>> GetProductsAsync() => await Task.Run(() =>
-        {
-            var query = _context.Products.FromSqlRaw(@"Select * From ""Products""  ")
-            ;
-            return _context.Products
-                                    .Include(product => product.AllowedPaymentPlans)
-                                    .Include(product => product.ProductImages) as IQueryable<Product>;
-        });
 
+        private static readonly Func<BorrowContext, long, Product> GetProductByIdCompiledQuery = EF.CompileQuery<BorrowContext, long, Product>(
+                                                                                                                                                                                        (context, id) => context.Products.Where(product => product.Id == id && product.IsActive)
+                                                                                                                                                                                                                        .Include(product => product.AllowedPaymentPlans)
+                                                                                                                                                                                                                        .Include(product => product.ProductImages)
+                                                                                                                                                                                                                        .AsNoTracking()
+                                                                                                                                                                                                                        .FirstOrDefault());
 
         public void UpdateProduct()
         {

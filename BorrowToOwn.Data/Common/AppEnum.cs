@@ -27,7 +27,11 @@ namespace BorrowToOwn.Data.Common
             In_Payment,
             Is_Executed_Completely
         }
-
+        public enum AddressType
+        {
+            Home = 1,
+            Office
+        }
         public enum PaymentPlanType
         {
             One_Off_Purchase = 1,

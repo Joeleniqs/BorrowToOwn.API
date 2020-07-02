@@ -15,7 +15,7 @@ namespace BorrowToOwn.Data.Repository.Implementations
         private readonly BorrowContext _context;
         private readonly ILogger<CategoryRepository> _logger;
 
-        public CategoryRepository(BorrowContext context,ILogger<CategoryRepository> logger)
+        public CategoryRepository(BorrowContext context, ILogger<CategoryRepository> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _logger = logger;
@@ -42,23 +42,27 @@ namespace BorrowToOwn.Data.Repository.Implementations
         public async Task<bool> DeleteCategoryAsync(int id)
         {
             var category = await _context.Categories
-                                                  .Where(cat=>cat.Id == id)
+                                                  .Where(cat => cat.Id == id)
                                                   .Include(sub => sub.SubCategories)
                                                   .FirstOrDefaultAsync();
+
+
             category.IsActive = !category.IsActive;
             category.IsDeleted = !category.IsDeleted;
-            category.SubCategories.ToList().ForEach(sub => {
+            category.SubCategories.ToList().ForEach(sub =>
+            {
                 sub.IsActive = !sub.IsActive;
                 sub.IsDeleted = !sub.IsDeleted;
             });
 
-            if(await SaveAsync() > 0 ) return true;
+            if (await SaveAsync() > 0) return true;
             return false;
         }
 
         public async Task<bool> DeleteSubCategoryAsync(int categoryId, int subCategoryId)
         {
-            var subCategory = await _context.SubCategories.FirstOrDefaultAsync(sub => sub.Id == subCategoryId && sub.CategoryId == categoryId);
+            var subCategory = await _context.SubCategories
+                                                                  .FirstOrDefaultAsync(sub => sub.Id == subCategoryId && sub.CategoryId == categoryId);
             if (subCategory == default) return false;
 
             subCategory.IsActive = !subCategory.IsActive;
@@ -68,61 +72,102 @@ namespace BorrowToOwn.Data.Repository.Implementations
             return false;
         }
 
-        public async Task<IEnumerable<Category>> GetCategoriesAsync() =>   await _context.Categories
-                                                                                                                                        .Where(cat=>cat.IsActive)
-                                                                                                                                        .OrderBy(cat => cat.CategoryName)
-                                                                                                                                        .ToListAsync();
+        public async Task<IEnumerable<Category>> GetCategoriesAsync()
+        {
+            var cats = await Task.Run(() => _GetCategoriesCompiledQuery.Invoke(_context));
+            return cats.ToList();
+        }
 
+        private static readonly Func<BorrowContext, IEnumerable<Category>> _GetCategoriesCompiledQuery = EF.CompileQuery<BorrowContext, IEnumerable<Category>>(
+                                                                                                                                                                                    (context) => context.Categories
+                                                                                                                                                                                                                    .Where(cat => cat.IsActive)
+                                                                                                                                                                                                                    .Select(c => new Category
+                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                        Id = c.Id,
+                                                                                                                                                                                                                        CategoryName = c.CategoryName,
+                                                                                                                                                                                                                        IsActive = c.IsActive,
+                                                                                                                                                                                                                        IsDeleted = c.IsDeleted
+                                                                                                                                                                                                                    })
+                                                                                                                                                                                                                    .OrderBy(cat => cat.CategoryName)
+                                                                                                                                                                                                                    .AsNoTracking()
+                                                                                                                                                                            );
 
         public async Task<Category> GetCategoryAsync(int id, bool includeSubCategories = false)
         {
-           if (includeSubCategories)
+            if (includeSubCategories)
             {
-                return await _context.Categories
-                                            .Where(category => category.Id == id && category.IsActive)
-                                            .Include(ent => ent.SubCategories)
-                                            .Select(c => new Category{
-                                                Id = c.Id,
-                                                CategoryName = c.CategoryName,
-                                                IsActive = c.IsActive,
-                                                IsDeleted = c.IsDeleted,
-                                                IsModified = c.IsModified,
-                                                CreatedBy = c.CreatedBy,
-                                                LastModifiedBy = c.LastModifiedBy,
-                                                TimeStampCreated = c.TimeStampCreated,
-                                                TimeStampModified =c.TimeStampModified,
-                                                SubCategories = c.SubCategories.Where(i => i.IsActive)
-                                            })
-                                            .FirstOrDefaultAsync() ;
-               
+                return await Task.Run(() => _GetCategoryWithSubCategoryCompiledQuery.Invoke(_context, id));
             }
             else
             {
-                return await _context.Categories
-                                        .FirstOrDefaultAsync(category => category.Id == id && category.IsActive);
+               return await Task.Run(() => _GetCategoryCompiledQuery.Invoke(_context, id));
             }
         }
 
-        public async Task<bool> IsCategoryValidAsync(int id,int subCategoryid = -1,bool toggleDeleteCheck = false)
+        private static readonly Func<BorrowContext, int, Category> _GetCategoryCompiledQuery = EF.CompileQuery<BorrowContext, int, Category>((context, id) => context.Categories
+                                                                                                                                                                                                                         .Where(category => category.Id == id && category.IsActive)
+                                                                                                                                                                                                                         .Select(c => new Category
+                                                                                                                                                                                                                         {
+                                                                                                                                                                                                                             Id = c.Id,
+                                                                                                                                                                                                                             CategoryName = c.CategoryName,
+                                                                                                                                                                                                                             IsActive = c.IsActive,
+                                                                                                                                                                                                                             IsDeleted = c.IsDeleted
+                                                                                                                                                                                                                         })
+                                                                                                                                                                                                                        .AsNoTracking()
+                                                                                                                                                                                                                        .FirstOrDefault()
+                                                                                                                                                                           );
+        private static readonly Func<BorrowContext, int, Category> _GetCategoryWithSubCategoryCompiledQuery = EF.CompileQuery<BorrowContext, int, Category>((context, id) => context.Categories
+                                                                                                                                                                                                                        .Where(category => category.Id == id && category.IsActive)
+                                                                                                                                                                                                                        .Select(c => new Category
+                                                                                                                                                                                                                        {
+                                                                                                                                                                                                                            Id = c.Id,
+                                                                                                                                                                                                                            CategoryName = c.CategoryName,
+                                                                                                                                                                                                                            IsActive = c.IsActive,
+                                                                                                                                                                                                                            IsDeleted = c.IsDeleted,
+                                                                                                                                                                                                                            SubCategories = c.SubCategories.Where(i => i.IsActive)
+                                                                                                                                                                                                                                                                                   .Select(s => new SubCategory
+                                                                                                                                                                                                                                                                                   {
+                                                                                                                                                                                                                                                                                       Name = s.Name,
+                                                                                                                                                                                                                                                                                       Id = s.Id
+                                                                                                                                                                                                                                                                                   })
+                                                                                                                                                                                                                        })
+                                                                                                                                                                                                                         .AsNoTracking()
+                                                                                                                                                                                                                        .FirstOrDefault()
+                                                                                                                                                                          );
+
+        public async Task<bool> IsCategoryValidAsync(int id, int subCategoryid = -1, bool toggleDeleteCheck = false)
         {
             Category category = new Category();
             if (subCategoryid > 0)
             {
                 category = await _context.Categories
-                                                .Include(cat => cat.SubCategories)
-                                                .FirstOrDefaultAsync(cat => cat.Id == id && toggleDeleteCheck ? cat.IsActive || !cat.IsActive : cat.IsActive );
+                                                .Where(cat => cat.Id == id)
+                                                .Where(cat => toggleDeleteCheck ? cat.IsActive || !cat.IsActive : cat.IsActive)
+                                                .Select(cat => new Category
+                                                {
+                                                    Id = cat.Id,
+                                                    SubCategories = cat.SubCategories.Where(subCategory => subCategory.Id == subCategoryid)
+                                                    .Where(subCategory => toggleDeleteCheck ? subCategory.IsActive || !subCategory.IsActive : subCategory.IsActive)
+                                                    .Select(s => new SubCategory
+                                                    {
+                                                        Id = s.Id,
+                                                    })
+                                                })
+                                                .AsNoTracking()
+                                                .FirstOrDefaultAsync();
 
                 if (category == default(Category)) return false;
-
-                var subCat = category.SubCategories.FirstOrDefault(subCategory => subCategory.CategoryId == subCategoryid && toggleDeleteCheck ? subCategory.IsActive || !subCategory.IsActive : subCategory.IsActive);
-
-                if (subCat == default(SubCategory)) return false;
-
+                if (!category.SubCategories.Any()) return false;
                 return true;
             }
             else
             {
-                category = await _context.Categories.FirstOrDefaultAsync(cat => cat.Id == id && toggleDeleteCheck ? cat.IsActive || !cat.IsActive : cat.IsActive);
+                category = await _context.Categories
+                                                         .Where(cat => cat.Id == id)
+                                                         .Where(cat => toggleDeleteCheck ? cat.IsActive || !cat.IsActive : cat.IsActive)
+                                                         .Select(cat => new Category { Id = cat.Id })
+                                                         .AsNoTracking()
+                                                         .FirstOrDefaultAsync();
 
                 if (category == default(Category)) return false;
                 return true;
