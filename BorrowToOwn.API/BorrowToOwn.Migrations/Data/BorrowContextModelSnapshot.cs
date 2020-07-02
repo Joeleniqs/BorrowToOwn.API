@@ -28,17 +28,7 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long?>("HomeAddressId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("OfficeAddressId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("HomeAddressId");
-
-                    b.HasIndex("OfficeAddressId");
 
                     b.ToTable("Addresses");
                 });
@@ -50,19 +40,34 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<long?>("AddressId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("AddressType")
+                        .HasColumnType("integer");
+
                     b.Property<string>("City")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Country")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("State")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("StreetName")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(200)")
+                        .HasMaxLength(200);
 
                     b.Property<int>("StreetNumber")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.ToTable("AddressDetails");
                 });
@@ -93,13 +98,15 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("boolean");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
 
                     b.Property<bool>("IsOrderLevelReady")
                         .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -138,7 +145,8 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasMaxLength(256);
 
                     b.Property<string>("UserProfilePicUrl")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 
@@ -167,10 +175,12 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("AppUserId")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("DocumentUrl")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100);
 
                     b.Property<DateTime>("From")
                         .HasColumnType("timestamp without time zone");
@@ -185,6 +195,22 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                     b.ToTable("AppUserBankStatement");
                 });
 
+            modelBuilder.Entity("BorrowToOwn.Data.Models.Brand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("character varying(25)")
+                        .HasMaxLength(25);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Brand");
+                });
+
             modelBuilder.Entity("BorrowToOwn.Data.Models.Card", b =>
                 {
                     b.Property<long>("Id")
@@ -193,19 +219,23 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("AppUserId")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(40)")
+                        .HasMaxLength(40);
 
                     b.Property<int>("CVV")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
 
-                    b.Property<long>("Number")
-                        .HasColumnType("bigint");
+                    b.Property<string>("Number")
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
 
-                    b.Property<int>("Pin")
-                        .HasColumnType("integer");
+                    b.Property<string>("Pin")
+                        .HasColumnType("character varying(4)")
+                        .HasMaxLength(4);
 
                     b.HasKey("Id");
 
@@ -223,10 +253,12 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(25)")
+                        .HasMaxLength(25);
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -238,7 +270,8 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("boolean");
 
                     b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
 
                     b.Property<DateTimeOffset>("TimeStampCreated")
                         .HasColumnType("timestamp with time zone");
@@ -259,7 +292,8 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ApprovalComment")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(500)")
+                        .HasMaxLength(500);
 
                     b.Property<long?>("OrderId")
                         .HasColumnType("bigint");
@@ -279,16 +313,19 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("AppUserId")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("DocumentUrl")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100);
 
                     b.Property<DateTime>("ExpiryDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("IdentityName")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(25)")
+                        .HasMaxLength(25);
 
                     b.Property<int>("IdentityType")
                         .HasColumnType("integer");
@@ -308,10 +345,12 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("AppUserId")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(30)")
+                        .HasMaxLength(30);
 
                     b.Property<string>("ApprovedBy")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
 
                     b.Property<int>("DeliveryPrice")
                         .HasColumnType("integer");
@@ -368,7 +407,8 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("AppUserId")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(30)")
+                        .HasMaxLength(30);
 
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint");
@@ -437,7 +477,8 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 
                     b.Property<string>("PlanName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
 
                     b.Property<int>("PlanType")
                         .HasColumnType("integer");
@@ -469,14 +510,19 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                     b.Property<List<string>>("AvailableSizes")
                         .HasColumnType("text[]");
 
+                    b.Property<int>("BrandId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(1000)")
+                        .HasMaxLength(1000);
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -488,13 +534,16 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("boolean");
 
                     b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Model")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
 
                     b.Property<int>("ProductState")
                         .HasColumnType("integer");
@@ -516,6 +565,8 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BrandId");
+
                     b.HasIndex("SearchVector")
                         .HasAnnotation("Npgsql:IndexMethod", "GIN");
 
@@ -534,7 +585,9 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ImageUrl")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100);
 
                     b.Property<bool>("IsCoverImage")
                         .HasColumnType("boolean");
@@ -558,10 +611,14 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("integer");
 
                     b.Property<string>("PaymentPlanName")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasColumnType("character varying(30)")
+                        .HasMaxLength(30);
 
                     b.Property<string>("ProductName")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasColumnType("character varying(30)")
+                        .HasMaxLength(30);
 
                     b.HasKey("ProductId", "PaymentPlanId");
 
@@ -581,7 +638,8 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("integer");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -593,7 +651,9 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -732,15 +792,11 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("BorrowToOwn.Data.Models.Address", b =>
+            modelBuilder.Entity("BorrowToOwn.Data.Models.AddressDetails", b =>
                 {
-                    b.HasOne("BorrowToOwn.Data.Models.AddressDetails", "HomeAddress")
-                        .WithMany()
-                        .HasForeignKey("HomeAddressId");
-
-                    b.HasOne("BorrowToOwn.Data.Models.AddressDetails", "OfficeAddress")
-                        .WithMany()
-                        .HasForeignKey("OfficeAddressId");
+                    b.HasOne("BorrowToOwn.Data.Models.Address", null)
+                        .WithMany("Addresses")
+                        .HasForeignKey("AddressId");
                 });
 
             modelBuilder.Entity("BorrowToOwn.Data.Models.AppUser", b =>
@@ -823,6 +879,12 @@ namespace BorrowToOwn.API.BorrowToOwn.Migrations.Data
 
             modelBuilder.Entity("BorrowToOwn.Data.Models.Product", b =>
                 {
+                    b.HasOne("BorrowToOwn.Data.Models.Brand", "ProductBrand")
+                        .WithMany("Products")
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BorrowToOwn.Data.Models.SubCategory", "ProductSubCategory")
                         .WithMany("Products")
                         .HasForeignKey("SubCategoryId")

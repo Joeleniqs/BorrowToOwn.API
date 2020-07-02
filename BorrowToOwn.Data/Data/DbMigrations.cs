@@ -32,10 +32,10 @@ namespace BorrowToOwn.Data.Data
                         {
                             context.Database.ExecuteSqlRaw(script);
                         }
-                    }
-
-
                 }
+
+
+            }
             }
 
         }

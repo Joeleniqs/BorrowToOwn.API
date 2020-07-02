@@ -6,15 +6,13 @@ namespace BorrowToOwn.Services.Communications.RequestObject.DTO
 {
     public class CategoryRequestObject
     {
-        public CategoryRequestObject()
-        {
-            SubCategories = new HashSet<SubCategoryRequestObject>();
-        }
         [Required]
+        [MaxLength(20)]
         public string CategoryName { get; set; }
         [Required]
+        [MaxLength(20)]
         public string CreatedBy { get; set; }
 
-        public virtual IEnumerable<SubCategoryRequestObject> SubCategories { get; set; }
+        public IEnumerable<SubCategoryRequestObject> SubCategories { get; set; } = new List<SubCategoryRequestObject>();
     }
 }

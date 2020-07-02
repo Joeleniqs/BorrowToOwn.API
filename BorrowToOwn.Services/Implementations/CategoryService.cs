@@ -75,7 +75,7 @@ namespace BorrowToOwn.Services.Implementations
 
         public async Task<bool> IsCategoryValidAsync(int id,int subCategoryId = -1,bool isDeleteToggle = false)
         {
-            var check = await _catRepo.IsCategoryValidAsync(id, subCategoryId);
+            var check = await _catRepo.IsCategoryValidAsync(id, subCategoryId,isDeleteToggle);
             if (!check) return false;
             return true;
         }

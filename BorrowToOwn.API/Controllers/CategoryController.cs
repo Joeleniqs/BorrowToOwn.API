@@ -24,7 +24,6 @@ namespace BorrowToOwn.API.Controllers
         public async Task<IActionResult> Get()
         {
             var cats = await _categoryService.GetCategoriesAsync();
-
             return Ok(cats);
         }
 
@@ -52,7 +51,7 @@ namespace BorrowToOwn.API.Controllers
         [HttpDelete("{id:int}/ToggleActive")]
         public async Task<IActionResult> ToggleCategoryActive(int id)
         {
-            var check = await _categoryService.IsCategoryValidAsync(id);
+            var check = await _categoryService.IsCategoryValidAsync(id,isDeleteToggle: true);
 
             if (!check) return BadRequest("No Such Category");
 
@@ -78,7 +77,7 @@ namespace BorrowToOwn.API.Controllers
         [HttpDelete("{id:int}/SubCategories/{subCategoryId:int}/ToggleActive")]
         public async Task<IActionResult> ToggleSubCategoryActive(int id , int subCategoryId)
         {
-            var check = await _categoryService.IsCategoryValidAsync(id,subCategoryId);
+            var check = await _categoryService.IsCategoryValidAsync(id,subCategoryId,true);
 
             if (!check) return BadRequest("No Such Category");
 
