@@ -19,13 +19,13 @@ namespace BorrowToOwn.Services.Communications.RequestObject.DTO
         [Required]
         public decimal ActualPrice { get; set; }
         [Required]
-        public decimal BrandId { get; set; }
+        public int BrandId { get; set; }
         [MaxLength(50)]
-        public string Model { get; set; }
+        public string Model { get; set; } = string.Empty;
 
-        public List<string> AvailableSizes { get; set; }
+        public List<string> AvailableSizes { get; set; } = new List<string>();
 
-        public List<int> AvailableProductColours { get; set; }
+        public List<int> AvailableProductColours { get; set; } = new List<int>();
 
         [Required]
         [MaxLength(1000)]
@@ -33,10 +33,10 @@ namespace BorrowToOwn.Services.Communications.RequestObject.DTO
         [Required]
         public int ProductState { get; set; }
         [MaxLength(20)]
-        public string CreatedBy { get; set; }
+        public string CreatedBy { get; set; } = string.Empty;
         [Required]
         public IFormFile CoverImage { get; set; }
-
+        [Required]
         public IFormFileCollection AlternateProductImages { get; set; }
         [Required]
         public ICollection<int> AssociatedPaymentPlans { get; set; }

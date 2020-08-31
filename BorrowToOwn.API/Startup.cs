@@ -41,6 +41,16 @@ namespace BorrowToOwn.API
         {
             //services.AddSingleton<IConfiguration>();
             var migrationAssembly = typeof(Startup).Assembly.GetName().Name;
+            var webOrigin = Configuration["ApplicationSettings:WebClientOrigin"];
+            services.AddCors(options =>
+            {
+                options.AddPolicy("defaultCorsPolicy", policy =>
+                {
+                    policy.WithOrigins(webOrigin)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
             services.AddControllers()
                 .AddMvcOptions(options =>
                 {
@@ -73,6 +83,10 @@ namespace BorrowToOwn.API
             services.AddScoped<IPaymentPlanService, PaymentPlanService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IBrandService, BrandService>();
+            services.AddScoped<IBrandRepository,BrandRepository>();
+
+
             DbMigrations.EnsureSeedData(connection);
         }
 
@@ -95,7 +109,7 @@ namespace BorrowToOwn.API
                     await context.Response.WriteAsync(result);
                 });
             });
-
+            app.UseCors("defaultCorsPolicy");
             app.UseHttpsRedirection();
 
             app.UseRouting();
