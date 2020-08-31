@@ -14,34 +14,28 @@ namespace BorrowToOwn.API.Controllers
 
         public BrandController(IBrandService brandService)
         {
-            _brandService = brandService ?? throw new ArgumentNullException(nameof(brandService));
+           _brandService = brandService ?? throw new ArgumentNullException(nameof(brandService));
         }
-        // GET: /<controller>/
+
         [HttpGet("")]
         public async Task<IActionResult> Get()
         {
             var cats = await _brandService.GetBrandsAsync();
-
             return Ok(cats);
         }
 
         [HttpGet("{id:int}", Name = "GetBrand")]
         public async Task<IActionResult> GetBrand(int id)
         {
-            var cat = await _brandService.GetBrandAsync(id);
-            if (cat == null) return NotFound();
-            return Ok(cat);
+            var cat = await _brandService.GetBrandAsync(id) ;
+            return cat == null ? Ok(cat) : (IActionResult) NotFound();
         }
 
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody] BrandRequestObject brandRequestObject)
         {
             var res = await _brandService.AddBrandAsync(brandRequestObject);
-
-            if (res == null) return BadRequest("Unable to create Brand at this time.");
-
-            return CreatedAtRoute("GetBrand", new { id = res.Id }, res);
-
+            return res == null ? CreatedAtRoute("GetBrand", new { id = res.Id }, res): (IActionResult) BadRequest("Unable to create Brand at this time.");
         }
     }
 }
