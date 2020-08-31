@@ -88,8 +88,7 @@ namespace BorrowToOwn.Services.Implementations
         public async Task<ProductResponseObject> GetProductAsync(long id)
         {
             var product = await _productRepo.GetProductAsync(id);
-            if (product == null) return null;
-            return _mapper.Map<ProductResponseObject>(product);
+            return product == null ? null : _mapper.Map<ProductResponseObject>(product);
         }
 
         public async Task<PagedList<Product>> GetProductsAsync(Pagination pagination)

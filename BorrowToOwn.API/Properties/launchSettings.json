@@ -20,7 +20,7 @@
     "BorrowToOwn.API": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "/api/Category",
+      "launchUrl": "/api/Categories",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

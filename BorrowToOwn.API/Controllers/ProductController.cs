@@ -31,11 +31,12 @@ namespace BorrowToOwn.API.Controllers
          DisableRequestSizeLimit,
          RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = long.MaxValue)]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Post([FromForm] ProductRequestObject PaymentPlanRequestObject)
+        public async Task<IActionResult> Post([FromForm] ProductRequestObject productRequestObject)
         {
+            return Ok();
             var bucketClient = _httpClientFactory.CreateClient("S3BucketClient");
 
-            var res = await _productService.AddProductAsync(PaymentPlanRequestObject,bucketClient);
+            var res = await _productService.AddProductAsync(productRequestObject,bucketClient);
 
             if (res == null) return BadRequest("Unable to create Product at this time.");
 

@@ -53,7 +53,7 @@ namespace BorrowToOwn.Data.Data
         public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<PaymentPlan> PaymentPlans { get; set; }
-        //  public DbSet<ProductPaymentPlan> ProductPaymentPlans { get; set; }
+        public DbSet<Brand> Brands { get; set; }
         public DbSet<PaymentHistory> PaymentHistories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
